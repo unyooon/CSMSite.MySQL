@@ -1,0 +1,22 @@
+version: "3.3" # docker-composeのversionを指定
+services:
+  db:
+    build: ./ # Dockerfileの置き場所を指定
+    image: mysql:5.7
+    container_name: dockerMySQL
+    environment:
+      MYSQL_DATABASE: sample_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+      - ./log/mysql:/var/log/mysql
+    networks:
+      - csmsite_network
+networks:
+  csmsite_network:
+    external: true
